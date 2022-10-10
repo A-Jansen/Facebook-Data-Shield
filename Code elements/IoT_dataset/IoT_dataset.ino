@@ -6,6 +6,16 @@
  *********************************************************************/
 
 #include "DFDataset.h"
+int ID;
+int buttonPressed; //use some kind of dictionary afterward to convert them to the names
+bool activated;
+String button;
+const char* Button1 = "test1";
+const char* Button2= "test2";
+
+
+int coreButtons[4];
+int complexButtons[26];
 
 // SSID of your Wifi network, the library currently does not support WPA2 Enterprise networks
 const char* ssid = "yourssid";
@@ -16,8 +26,8 @@ const char* password = "yourpassword";
 const char* datafoundry = "data.id.tue.nl";
 
 // create connection to dataset with server address, dataset id, and the access token
-DFDataset iot(datafoundry, 2809, "ZEVGMGJpMm1RUk1hWCtQL3lvQWJ1cTBxUmVLa0ZiRnVwVlc5L2xzQlJiOD0");
-
+DFDataset iotRaw(datafoundry, 2809, "ZEVGMGJpMm1RUk1hWCtQL3lvQWJ1cTBxUmVLa0ZiRnVwVlc5L2xzQlJiOD0");
+DFDataset iotUpload(datafoundry, 2809, "WnBPNUNqTWw3MnNlYkJqejJCa25VVUhJYnRmQjBmaEl6dnpBWDVJVEgrND0=");
 // put your setup code here, to run once:
 void setup() {
   Serial.begin(115200);
@@ -40,19 +50,50 @@ void setup() {
 
 void loop() {
 
-  // specify device, can be empty
-  iot.device("");
-
-  // specify activity, can be empty
-  iot.activity("");
-
-  // fill in some data for the item (very similar to OOCSI)
-  iot.addInt("numericalTimingData", millis());
-  iot.addBool("yesno", true);
-  iot.addString("stringData", "a long, long, long, long, long string - not really, but you get the point.");
-
-  // log the item data to the dataset
-  iot.logItem();
+  logRawData();
 
   delay(10000);
+}
+
+
+void logRawData(){
+  // specify device, can be empty
+  iotRaw.device("");
+  // specify activity, can be empty
+  iotRaw.activity("");
+
+  // fill in some data for the item (very similar to OOCSI)
+  iotRaw.addInt("ID_day", ID); //ID of the participant, is day specific 
+  iotRaw.addInt("buttonPressed", buttonPressed); //string variable with the name of the button pressed, or if too difficult the number
+  iotRaw.addBool("activated", activated); //boolean variable to record if it is activated (true) or deactivated (false)
+ 
+  // log the item data to the dataset
+  iotRaw.logItem();
+}
+
+void logUploadData(){
+  iotUpload.device("");
+  iotUpload.activity("");
+
+
+  iotUpload.addInt("ID_day", ID); //ID of the participant, is day specific 
+  iotUpload.addString("button1", Button1); //one of the two buttons pressed to start the session --> should be "NA" if nothing
+  iotUpload.addString("button2", Button2); //one of the two buttons pressed to start the session --> should be "NA" if nothing
+
+  //final states for all buttons (1 active, 0 not)
+   for (int i = 0; i < sizeof(coreButtons); i++) {
+     bool finalState = true;//coreButtons[i].checkFinalState();
+     button= String("Corebutton");
+     button += i;
+     iotUpload.addBool("button", finalState);
+
+  }
+   for (int i = 0; i < sizeof(complexButtons); i++) {
+    bool finalState = false;//complexButtons[i].checkFinalState();
+     button= String("Complexbutton");
+     button += i;
+     iotUpload.addBool("button", finalState);
+  }
+ // log the item data to the dataset
+  iotUpload.logItem();
 }
