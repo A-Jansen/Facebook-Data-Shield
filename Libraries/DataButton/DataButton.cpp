@@ -18,7 +18,7 @@ DataButton::DataButton(int pin, int startLED, int endLED, int associatedVars) {
   _debounceDelay = 50;
 }
 
-void DataButton::coreButtonPress(CRGB ledstrip[], CRGB *ledstrip2, int &numActive, int ader[]) {
+void DataButton::coreButtonPress(CRGB ledstrip[], CRGB *ledstrip2, int &numActive, int ader[], int aderLen) {
   _reading = digitalRead(_pin);
   //check if state changed, e.g. if it is pressed
   if (_reading != _lastButtonState) {
@@ -38,7 +38,7 @@ void DataButton::coreButtonPress(CRGB ledstrip[], CRGB *ledstrip2, int &numActiv
             FastLED.show();
             numActive += _associatedVars;  //add the number of variables in complex layer to number of active variables
           }
-          for (int i = 0; i <= sizeof(ader); i++) {
+          for (int i = 0; i < aderLen; i++) {
             int j = ader[i];
             ledstrip2[j] = CHSV(160, 200, 200);
             FastLED.show();
@@ -50,7 +50,7 @@ void DataButton::coreButtonPress(CRGB ledstrip[], CRGB *ledstrip2, int &numActiv
             FastLED.show();
             numActive -= _associatedVars;  //substract
           }
-          for (int i = 0; i <= sizeof(ader); i++) {
+          for (int i = 0; i < aderLen; i++) {
             int j = ader[i];
             ledstrip2[j] = CHSV(160, 200, 0);
             FastLED.show();

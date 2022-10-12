@@ -9,7 +9,7 @@
 class DataButton {
 public:
   DataButton(int pin, int startLED, int endLED, int associatedVars);
-  void coreButtonPress(CRGB ledstrip[], CRGB *ledstrip2, int &numActive, int ader[]);
+  void coreButtonPress(CRGB ledstrip[], CRGB *ledstrip2, int &numActive, int ader[], int aderLen);
   void complexButtonPress(CRGB *ledstrip, int &numActive);
   void uploadButtonPress(CRGB *ledstrip, int &numActive);
   bool checkFinalState();

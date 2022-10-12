@@ -32,7 +32,7 @@ void coreButtonsFunction() {
      // Serial.print("core button: ");
      // Serial.println(i);
       case 0:
-       coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader1);
+       coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader1, ader1Len);
 
         // if (digitalRead(corebutton1) == LOW) {
         //   for (int i = 0; i <= sizeof(ader1); i++) {
@@ -49,7 +49,7 @@ void coreButtonsFunction() {
         // }
         break;
       case 1:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader2);
+        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader2, ader2Len);
         // if (digitalRead(corebutton1) == LOW && prevRead == HIGH) {
         //   prevRead=digitalRead(corebutton1);
         //   if (value == 0) {
@@ -72,13 +72,13 @@ void coreButtonsFunction() {
        // }
         break;
       case 2:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX,active, ader3);
+        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX,active, ader3, ader3Len);
         break;
       case 3:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader4);
+        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader4, ader4Len);
         break;
       case 4:
-        coreButtons[i].coreButtonPress(leds_CORE,leds_COMPLEX, active, ader5);
+        coreButtons[i].coreButtonPress(leds_CORE,leds_COMPLEX, active, ader5, ader5Len);
         break;
     }
   }
