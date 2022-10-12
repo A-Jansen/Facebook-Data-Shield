@@ -11,104 +11,125 @@ DataButton::DataButton(int pin, int startLED, int endLED, int associatedVars) {
   _oldState = 1;
   _newState;
   _value = 0;
+  _reading;
+  _buttonState;
+  _lastButtonState = HIGH;
+  _lastDebounceTime = 0;
+  _debounceDelay = 50;
 }
 
 void DataButton::coreButtonPress(CRGB ledstrip[], CRGB *ledstrip2, int &numActive, int ader[]) {
-  _newState = digitalRead(_pin);
+  _reading = digitalRead(_pin);
   //check if state changed, e.g. if it is pressed
-  if (_oldState == 0 && _newState == 1) {
-    //if it was off, turn it on and reverse
-    if (_value == 0) {
-      _value = 1;
-    } else {
-      _value = 0;
+  if (_reading != _lastButtonState) {
+    _lastDebounceTime = millis();
+  }
+  if ((millis() - _lastDebounceTime) > _debounceDelay) {
+    if (_reading != _buttonState) {
+      _buttonState = _reading;
+
+      if (_buttonState == LOW) {
+
+        //if it was off, turn it on and reverse
+        if (_value == 0) {
+          _value = 1;
+          for (int i = _startLED; i <= _endLED; i++) {
+            ledstrip[i] = CHSV(160, 200, 200);
+            FastLED.show();
+            numActive += _associatedVars;  //add the number of variables in complex layer to number of active variables
+          }
+          for (int i = 0; i <= sizeof(ader); i++) {
+            int j = ader[i];
+            ledstrip2[j] = CHSV(160, 200, 200);
+            FastLED.show();
+          }
+        } else {
+          _value = 0;
+          for (int i = _startLED; i <= _endLED; i++) {
+            ledstrip[i] = CHSV(160, 200, 0);
+            FastLED.show();
+            numActive -= _associatedVars;  //substract
+          }
+          for (int i = 0; i <= sizeof(ader); i++) {
+            int j = ader[i];
+            ledstrip2[j] = CHSV(160, 200, 0);
+            FastLED.show();
+          }
+        }
+      }
     }
   }
-  _oldState = _newState;
-  switch (_value) {
-    case 0:
-      for (int i = 0; i < _numLEDs; i++) {
-        ledstrip[i] = CHSV(160, 200, 200);
-        FastLED.show();
-        numActive += _associatedVars;  //add the number of variables in complex layer to number of active variables
-      }
-      for (int i = 0; i <= sizeof(ader); i++) {
-        int j = ader[i];
-        ledstrip2[j] = CHSV(160, 200, 200);
-        FastLED.show();
-      }
-      break;
-    case 1:
-      for (int i = 0; i < _numLEDs; i++) {
-        ledstrip[i] = CHSV(160, 200, 0);
-        FastLED.show();
-        numActive -= _associatedVars;  //substract
-      }
-      for (int i = 0; i <= sizeof(ader); i++) {
-        int j = ader[i];
-        ledstrip2[j] = CHSV(160, 200, 0);
-        FastLED.show();
-      }
-      break;
-  }
+  _lastButtonState = _reading;
 }
+
 
 void DataButton::complexButtonPress(CRGB *ledstrip, int &numActive) {
-  _newState = digitalRead(_pin);
+  _reading = digitalRead(_pin);
   //check if state changed, e.g. if it is pressed
-  if (_oldState == 0 && _newState == 1) {
-    //if it was off, turn it on and reverse
-    if (_value == 0) {
-      _value = 1;
-    } else {
-      _value = 0;
+  if (_reading != _lastButtonState) {
+    _lastDebounceTime = millis();
+  }
+  if ((millis() - _lastDebounceTime) > _debounceDelay) {
+    if (_reading != _buttonState) {
+      _buttonState = _reading;
+
+      if (_buttonState == LOW) {
+
+        //if it was off, turn it on and reverse
+        if (_value == 0) {
+          _value = 1;
+          for (int i = _startLED; i <= _endLED; i++) {
+            ledstrip[i] = CHSV(160, 200, 200);
+            FastLED.show();
+            numActive++;  //add the number of variables in complex layer to number of active variables
+          }
+        } else {
+          _value = 0;
+          for (int i = _startLED; i <= _endLED; i++) {
+            ledstrip[i] = CHSV(160, 200, 0);
+            FastLED.show();
+            numActive--;  //substract
+          }
+        }
+      }
     }
   }
-  switch (_value) {
-    case 0:
-      for (int i = _startLED; i <= _endLED; i++) {
-        ledstrip[i] = CHSV(160, 200, 200);
-        FastLED.show();
-        numActive++;  //add one to active variables
-      }
-      break;
-    case 1:
-      for (int i = _startLED; i <= _endLED; i++) {
-        ledstrip[i] = CHSV(160, 200, 0);
-        FastLED.show();
-        numActive--;  //minus 1 for number of active variables
-      }
-      break;
-  }
+  _lastButtonState = _reading;
 }
 
+
 void DataButton::uploadButtonPress(CRGB *ledstrip, int &numActive) {
-  _newState = digitalRead(_pin);
+  _reading = digitalRead(_pin);
   //check if state changed, e.g. if it is pressed
-  if (_oldState == 0 && _newState == 1) {
-    //if it was off, turn it on and reverse
-    if (_value == 0) {
-      _value = 1;
-    } else {
-      _value = 0;
+  if (_reading != _lastButtonState) {
+    _lastDebounceTime = millis();
+  }
+  if ((millis() - _lastDebounceTime) > _debounceDelay) {
+    if (_reading != _buttonState) {
+      _buttonState = _reading;
+
+      if (_buttonState == LOW) {
+
+        //if it was off, turn it on and reverse
+        if (_value == 0) {
+          _value = 1;
+          for (int i = _startLED; i <= _endLED; i++) {
+            ledstrip[i] = CHSV(160, 200, 200);
+            FastLED.show();
+            numActive++;  //add the number of variables in complex layer to number of active variables
+          }
+        } else {
+          _value = 0;
+          for (int i = _startLED; i <= _endLED; i++) {
+            ledstrip[i] = CHSV(160, 200, 0);
+            FastLED.show();
+            numActive--;  //substract
+          }
+        }
+      }
     }
   }
-  switch (_value) {
-    case 0:
-      for (int i = _startLED; i <= _endLED; i++) {
-        ledstrip[i] = CHSV(160, 200, 200);
-        FastLED.show();
-        numActive++;  //add one to active variables
-      }
-      break;
-    case 1:
-      for (int i = _startLED; i <= _endLED; i++) {
-        ledstrip[i] = CHSV(160, 200, 0);
-        FastLED.show();
-        numActive--;  //minus 1 for number of active variables
-      }
-      break;
-  }
+  _lastButtonState = _reading;
 }
 
 

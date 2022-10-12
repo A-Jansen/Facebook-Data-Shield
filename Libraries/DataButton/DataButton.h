@@ -22,6 +22,11 @@ private:
   int _oldState;
   int _newState;
   int _associatedVars;
+  int _reading;
+  int _buttonState;
+  int _lastButtonState;
+  unsigned long _lastDebounceTime=0;
+  unsigned long _debounceDelay = 50;
   bool _value;
 };
 
