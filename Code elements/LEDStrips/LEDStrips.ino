@@ -24,6 +24,8 @@ CRGB leds_OUTERRIM[NUM_LEDS_OUTERRIM];
 #define corebutton4 4
 #define corebutton5 3
 
+#define numCoreButtons 5
+
 #define complexbutton1_1 39
 #define complexbutton1_2 25
 #define complexbutton1_3 35
@@ -32,6 +34,8 @@ CRGB leds_OUTERRIM[NUM_LEDS_OUTERRIM];
 #define complexbutton1_6 32
 #define complexbutton1_7 31
 
+#define numComplex1 7
+
 #define complexbutton2_1 34
 #define complexbutton2_2 30
 #define complexbutton2_3 17
@@ -39,10 +43,14 @@ CRGB leds_OUTERRIM[NUM_LEDS_OUTERRIM];
 #define complexbutton2_5 27
 #define complexbutton2_6 13
 
+#define numComplex2 6
+
 #define complexbutton3_1 28
 #define complexbutton3_2 12
 #define complexbutton3_3 15
 #define complexbutton3_4 22
+
+#define numComplex3 4
 
 #define complexbutton4_1 37
 #define complexbutton4_2 40
@@ -52,8 +60,14 @@ CRGB leds_OUTERRIM[NUM_LEDS_OUTERRIM];
 #define complexbutton4_6 29
 #define complexbutton4_7 26
 
+#define numComplex4 7
+
+
 #define complexbutton5_1 11
 #define complexbutton5_2 14
+
+#define numComplex5 2
+
 
 #define matpin 41  //voor de pressure sensor voetmat
 
@@ -64,8 +78,8 @@ int ader3[] = { 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 
 int ader4[] = { 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37 };
 int ader5[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
-int prevRead=1;
-int value=0;
+int prevRead = 1;
+int value = 0;
 
 //------ DataButton objects
 //DataButton name(buttonpin, startValue, endValue) start and end of LED
@@ -133,23 +147,28 @@ void setup() {
   pinMode(corebutton3, INPUT_PULLUP);
   pinMode(corebutton4, INPUT_PULLUP);
   pinMode(corebutton5, INPUT_PULLUP);
-}
-
-void loop() {
-  Serial.println(digitalRead(corebutton1));
-  // Serial.println(adjuster);
-  // outerrimLEDS();
-  uploadButton.uploadButtonPress(leds_CORE, active);
-  coreButtonsFunction();
-  complexButtons();
-  fill_solid(leds_CORE, 37, CRGB::Red);
+  Serial.println(sizeof(coreButtons));
+  //rechte stukje naar core button1
   for (int i = 78; i<=83;i++){
     leds_CORE[i] = CHSV(60, 200, 200);
   }
 
+  //button1"? or core button?
     for (int i = 84; i<=87;i++){
     leds_CORE[i] = CHSV(60, 200, 200);
   }
-  fill_solid(leds_OUTERRIM, NUM_LEDS_OUTERRIM, CRGB::Blue);
+  
+}
+
+void loop() {
+  Serial.println(digitalRead(corebutton1));
+  outerrimLEDS();
+  uploadButton.uploadButtonPress(leds_CORE, active);
+  coreButtonsFunction();
+  complexButtons();
+  //inner circle of the core
+  fill_solid(leds_CORE, 37, CRGB::White);
+
+  // fill_solid(leds_OUTERRIM, NUM_LEDS_OUTERRIM, CRGB::Blue);
   FastLED.show();
 }

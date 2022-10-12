@@ -1,32 +1,36 @@
 void complexButtons() {
+  Serial.println("Run complexbuttons");
   //complexButtonsCore1[0].complexButtonPress(leds_COMPLEX,active);
   // //for loop over all the buttons in the complex layer and saying they should change the leds in the leds_COMPLEX
-  for (int i = 0; i < sizeof(complexButtonsCore1); i++) {
+  for (int i = 0; i < numComplex1; i++) {
     complexButtonsCore1[i].complexButtonPress(leds_COMPLEX, active);
   }
-  for (int i = 0; i < sizeof(complexButtonsCore2); i++) {
+  for (int i = 0; i < numComplex2; i++) {
+  
     complexButtonsCore2[i].complexButtonPress(leds_COMPLEX, active);
   }
-  for (int i = 0; i < sizeof(complexButtonsCore3); i++) {
+  for (int i = 0; i < numComplex3; i++) {
     complexButtonsCore3[i].complexButtonPress(leds_COMPLEX, active);
   }
-  for (int i = 0; i < sizeof(complexButtonsCore4); i++) {
+  for (int i = 0; i < numComplex4; i++) {
     complexButtonsCore4[i].complexButtonPress(leds_COMPLEX, active);
   }
-  for (int i = 0; i < sizeof(complexButtonsCore5); i++) {
+  for (int i = 0; i < numComplex5; i++) {
     complexButtonsCore5[i].complexButtonPress(leds_COMPLEX, active);
   }
 }
 
 
 void coreButtonsFunction() {
-
+  Serial.println("Run coreubttons");
   //checking if one of the core buttons is pressed and sending the ledstrip it should turn on or off
-  for (int i = 0; i < sizeof(coreButtons); i++) {
-
+  for (int i = 0; i < numCoreButtons; i++) {
+    //Serial.print("Core button: ");
+   // Serial.println(i);
+   
     switch (i) {
-      Serial.print("core button: ");
-      Serial.println(i);
+     // Serial.print("core button: ");
+     // Serial.println(i);
       case 0:
        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader1);
 
