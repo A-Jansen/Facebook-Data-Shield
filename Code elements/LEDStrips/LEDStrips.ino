@@ -98,28 +98,28 @@ char *coreNames[] = { "yourBehavior", "yourTechnologicalSetup", "YourDemographic
 
 
 DataButton complexButtonsCore1[] = {
-  DataButton(complexbutton1_1, 107, 111, 1), DataButton(complexbutton1_2, 111, 116, 1), DataButton(complexbutton1_3, 117, 121, 1), DataButton(complexbutton1_4, 122, 126, 1),
-  DataButton(complexbutton1_5, 127, 131, 1), DataButton(complexbutton1_6, 132, 136, 1), DataButton(complexbutton1_7, 137, 141, 1)
+  DataButton(complexbutton1_1, 102, 106, 1), DataButton(complexbutton1_2, 107 , 111, 1), DataButton(complexbutton1_3, 112, 116, 1), DataButton(complexbutton1_4, 117, 121, 1),
+  DataButton(complexbutton1_5, 122, 126, 1), DataButton(complexbutton1_6, 127, 131, 1), DataButton(complexbutton1_7, 132, 136, 1)
 };
 
 
 DataButton complexButtonsCore2[] = {
-  DataButton(complexbutton2_1, 142, 146, 1), DataButton(complexbutton2_2, 147, 151, 1), DataButton(complexbutton2_3, 152, 156, 1), DataButton(complexbutton2_4, 157, 161, 1),
-  DataButton(complexbutton2_5, 162, 166, 1), DataButton(complexbutton2_6, 167, 171, 1)
+  DataButton(complexbutton2_1, 137, 141, 1), DataButton(complexbutton2_2, 142, 146, 1), DataButton(complexbutton2_3, 147, 151, 1), DataButton(complexbutton2_4, 152, 156, 1),
+  DataButton(complexbutton2_5, 157, 161, 1), DataButton(complexbutton2_6, 162, 166, 1)
 };
 
 DataButton complexButtonsCore3[] = {
-  DataButton(complexbutton3_1, 172, 177, 1), DataButton(complexbutton3_2, 178, 182, 1), DataButton(complexbutton3_3, 183, 187, 1), DataButton(complexbutton3_4, 188, 191, 1)
+  DataButton(complexbutton3_1, 167, 172, 1), DataButton(complexbutton3_2, 173, 177, 1), DataButton(complexbutton3_3, 178, 182, 1), DataButton(complexbutton3_4, 183, 186, 1)
 };
 
 
 DataButton complexButtonsCore4[] = {
-  DataButton(complexbutton4_1, 192, 196, 1), DataButton(complexbutton4_2, 197, 201, 1), DataButton(complexbutton4_3, 202, 206, 1), DataButton(complexbutton4_4, 207, 211, 1),
-  DataButton(complexbutton4_5, 212, 216, 1), DataButton(complexbutton4_6, 217, 221, 1), DataButton(complexbutton4_7, 222, 226, 1)
+  DataButton(complexbutton4_1, 187, 191, 1), DataButton(complexbutton4_2, 192, 196, 1), DataButton(complexbutton4_3, 197, 201, 1), DataButton(complexbutton4_4, 202, 206, 1),
+  DataButton(complexbutton4_5, 207, 211, 1), DataButton(complexbutton4_6, 212, 216, 1), DataButton(complexbutton4_7, 217, 221, 1)
 };
 
 DataButton complexButtonsCore5[] = {
-  DataButton(complexbutton5_1, 227, 231, 1), DataButton(complexbutton5_2, 232, 232, 1)
+  DataButton(complexbutton5_1, 222, 226, 1), DataButton(complexbutton5_2, 227, 231, 1)
 };
 //---------------------------
 
@@ -157,6 +157,8 @@ void setup() {
     for (int i = 84; i<=87;i++){
     leds_CORE[i] = CHSV(60, 200, 200);
   }
+  turnAllOn();
+  FastLED.show();
   
 }
 
@@ -167,7 +169,7 @@ void loop() {
   coreButtonsFunction();
   complexButtons();
   //inner circle of the core
-  fill_solid(leds_CORE, 37, CRGB::White);
+ // fill_solid(leds_CORE, 37, CRGB::White);
 
   // fill_solid(leds_OUTERRIM, NUM_LEDS_OUTERRIM, CRGB::Blue);
   FastLED.show();

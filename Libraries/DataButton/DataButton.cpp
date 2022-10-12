@@ -10,7 +10,7 @@ DataButton::DataButton(int pin, int startLED, int endLED, int associatedVars) {
   _associatedVars = associatedVars;
   _oldState = 1;
   _newState;
-  _value = 0;
+  _value = 1;
   _reading;
   _buttonState;
   _lastButtonState = HIGH;

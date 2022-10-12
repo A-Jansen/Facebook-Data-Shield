@@ -1,3 +1,12 @@
+void turnAllOn(){
+  for (int i= 0; i< NUM_LEDS_CORE;i++ ){
+    leds_CORE[i] = CHSV(160, 200, 200);
+  }
+   for (int i= 0; i< NUM_LEDS_COMPLEX;i++ ){
+    leds_COMPLEX[i] = CHSV(160, 200, 200);
+  }
+} 
+
 void checkTwoHighs() {
   //if two highs, save them to button1 and button2 and use them as unique identifiers
   // can only be in the core + upload button
