@@ -16,7 +16,7 @@ void turnAllOn() {
   coreButtons[3].setNumActiveGroup(7);
   coreButtons[4].setNumActiveGroup(2);
 
-    //inner circle of the core
+  //inner circle of the core
   fill_solid(leds_CORE, 37, CHSV(160, 200, brightnessOverall));
 }
 
@@ -36,6 +36,7 @@ void resetInstallation() {
   active = 31;
 
   twobuttons = true;
+  counter=0;
 }
 
 void checkTwoHighs() {
@@ -44,30 +45,30 @@ void checkTwoHighs() {
   int counter = 0;
   int but1;
   int but2;
-  // if (uploadButton.checkState()) {
-  //   counter++;
-  //   button1ID = 6;
-  // }
-  for (int i = 0; i < sizeof(coreButtons); i++) {
-    if (coreButtons[i].checkState()) {
-      counter++;
-      if (counter == 0) {
-        but1 = i;
-      } else {
-        but2 = i;
-      }
+ // Serial.println("check point check two highs");
+  for (int i = 0; i < numCoreButtons; i++) {
+    if (coreButtons[i].pressedButton()) {
+      Serial.println("Button pressed check two hihgs");
+      // counter++;
+      // if (counter == 0) {
+      //   but1 = i;
+      // } else {
+      //   but2 = i;
+      // }
     }
   }
-  if (counter == 2) {
-    startTwoMillis = millis();
-    button1ID = but1;
-    button2ID = but2;
-    twobuttons = false;
+  // if (counter == 2) {
+  //   startTwoMillis = millis();
+  //   button1ID = but1;
+  //   button2ID = but2;
+  //   twobuttons = false;
+  //   Serial.println(button1ID);
+  //   Serial.println(button2ID);
 
-    if ((millis() - startTwoMillis) < 500) {
-      fill_solid(leds_CORE, 37, CHSV(60, 200, brightnessOverall));
-    } else {
-      fill_solid(leds_CORE, 37, CHSV(160, 200, brightnessOverall));
-    }
-  }
+  //   if ((millis() - startTwoMillis) < 500) {
+  //     fill_solid(leds_CORE, 37, CHSV(96, 200, brightnessOverall));
+  //   } else {
+  //     fill_solid(leds_CORE, 37, CHSV(160, 200, brightnessOverall));
+  //   }
+  // }
 }

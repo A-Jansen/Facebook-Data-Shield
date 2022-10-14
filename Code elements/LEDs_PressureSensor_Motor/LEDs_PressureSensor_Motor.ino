@@ -79,8 +79,8 @@ CRGB leds_OUTERRIM[NUM_LEDS_OUTERRIM];
 /////// Aders connecting core and complex layer
 int ader1[] = { 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106 };
 int ader1Len = 26;
-int ader2[] = { 54, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
-int ader2Len = 26;
+int ader2[] = { 54,55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
+int ader2Len = 27;
 int ader3[] = { 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53 };
 int ader3Len = 17;
 int ader4[] = { 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37 };
@@ -93,7 +93,7 @@ int value = 0;
 
 //------ DataButton objects
 //DataButton name(buttonpin, startValue, endValue) start and end of LED
-DataButton uploadButton(uploadbuttonpin, 63, 76, 1);
+DataButton uploadButton(uploadbuttonpin, 63, 77, 1);
 
 //see More button
 DataButton seeMoreButton(pin_seeMoreButton, 0, 0, 0);
@@ -168,7 +168,7 @@ int lastState = 1;  //last state of the pressure mat
 bool changeDetected = 0;
 bool longPause = 1;  //ensuring that there is at least intervalMillisLow between reading the first low and the first high --> otherwise on low reading could increase the ID number
 
-bool resetOnce= 0;
+bool resetOnce = 0;
 
 int ID = 0;  //id of the current interaction, will be reset when disconnected
 
@@ -185,8 +185,15 @@ int button1ID;
 int button2ID;
 
 bool twobuttons = true;
+bool twoButtonsChecked = false;
 
 unsigned long startTwoMillis;
+
+
+int counter = 0;
+int but1;
+int but2;
+
 
 void setup() {
   Serial.begin(9600);
@@ -211,16 +218,20 @@ void setup() {
 
 void loop() {
   checkPresence();  //read the value of the pressure sensor to see if someone is standing on it
-  if (twobuttons) {
-    checkTwoHighs();
-  }
+                    //  Serial.print("Two buttons: ");
+                    //  Serial.println(twobuttons);
+  // if (twobuttons) {
+  //   checkTwoHighs();
+  // }
   brightnessOverall = int(map(active, 0, 31, 0, 255));
   outerrimLEDS();
   uploadButton.uploadButtonPress(leds_CORE, active, upload);
   seeMoreButton.turn(turning);
- // turnShield();
+  // turnShield();
   coreButtonsFunction();
   complexButtons();
+  //checkTwoHighs();
+
 
   if (upload) {
     resetInstallation();

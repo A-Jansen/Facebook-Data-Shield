@@ -1,4 +1,6 @@
 void coreButtonsFunction() {
+  int but1;
+  int but2;
   //checking if one of the core buttons is pressed and sending the ledstrip it should turn on or off
   for (int i = 0; i < numCoreButtons; i++) {
     //Serial.println(coreButtons[i].pressedButton());
@@ -23,11 +25,42 @@ void coreButtonsFunction() {
         coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader5, ader5Len, activeCoreGroup5);
         break;
     }
+
     if (coreButtons[i].pressedButton()) {
-      
+      Serial.println("Pressed button core buttons");
+      Serial.println(twobuttons);
+      //code at the start for checking if two buttons are pressed together for the id
+      if (twobuttons) {
+        if (counter == 0) {
+          counter = 1;
+          but1 = i+1;
+
+        } else {
+          counter = 2;
+          but2 = i+1;
+          startTwoMillis = millis();
+          twobuttons = false;
+          twoButtonsChecked = true;
+          fill_solid(leds_CORE, 37, CHSV(96, 200, 250));
+        }
+        Serial.print("counter: ");
+        Serial.println(counter);
+        if (counter == 2) {
+
+          button1ID = but1;
+          button2ID = but2;
+          Serial.print("Button1: ");
+          Serial.println(button1ID);
+          Serial.print("button 2: ");
+          Serial.println(button2ID);
+        }
+      }
+
+
+
       int state = coreButtons[i].checkState();
       int buttonID = i;
-      Serial.println(state);
+      //Serial.println(state);
       if (state == 1) {
         turnCompOn(i);
 
@@ -39,8 +72,10 @@ void coreButtonsFunction() {
       coreButtons[i].dePressButton();
     }
   }
-  // Serial.print("Core active changed: ");
-  //Serial.println(active);
+  if (((millis() - startTwoMillis) > 1000) && (twoButtonsChecked)) {
+    fill_solid(leds_CORE, 37, CHSV(160, 200, 250));
+    twoButtonsChecked = false;
+  }
 }
 
 void turnCompOn(int core) {
