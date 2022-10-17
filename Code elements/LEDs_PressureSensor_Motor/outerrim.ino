@@ -32,10 +32,10 @@ void outerrimLEDS2() {
       leds_OUTERRIM[i] = OUTERRIM_COLORS[i];
     }
   }
-  EVERY_N_MILLISECONDS(speedLight)
-  for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
-    leds_OUTERRIM[i] = leds_OUTERRIM[i - 1];
-    OUTERRIM_COLORS[i] = OUTERRIM_COLORS[i - 1];  //shift the colors accordingly
+  EVERY_N_MILLISECONDS(speedLight) {
+    for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
+      leds_OUTERRIM[i] = leds_OUTERRIM[i - 1];
+      OUTERRIM_COLORS[i] = OUTERRIM_COLORS[i - 1];  //shift the colors accordingly
+    }
   }
-
 }

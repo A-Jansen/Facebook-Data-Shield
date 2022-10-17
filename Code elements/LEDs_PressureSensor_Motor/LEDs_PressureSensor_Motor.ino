@@ -194,6 +194,7 @@ bool twoButtonsChecked = false;
 bool firstPressed = false;
 
 unsigned long startTwoMillis;
+unsigned long firstButtonMillis;
 
 
 int counter = 0;

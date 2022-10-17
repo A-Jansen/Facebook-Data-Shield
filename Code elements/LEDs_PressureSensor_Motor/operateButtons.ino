@@ -32,16 +32,20 @@ void coreButtonsFunction() {
       //code at the start for checking if two buttons are pressed together for the id
       if (twobuttons) {
         if (counter == 0) {
+          firstButtonMillis = millis();
           counter = 1;
           but1 = i;
 
-        } else {
+        } else if((millis()-firstButtonMillis)<2000) {
           counter = 2;
           but2 = i;
           startTwoMillis = millis();
           twobuttons = false;
           twoButtonsChecked = true;
           fill_solid(leds_CORE, 37, CHSV(96, 200, 250));
+        } else {
+          Serial.println(millis()-firstButtonMillis);
+          twobuttons = false; 
         }
         Serial.print("counter: ");
         Serial.println(counter);
