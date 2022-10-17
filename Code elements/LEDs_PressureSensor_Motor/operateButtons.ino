@@ -4,7 +4,7 @@ void coreButtonsFunction() {
   //checking if one of the core buttons is pressed and sending the ledstrip it should turn on or off
   for (int i = 0; i < numCoreButtons; i++) {
     //Serial.println(coreButtons[i].pressedButton());
-
+//    switchCoreButtons(i);
     switch (i) {
       case 0:
         coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader1, ader1Len, activeCoreGroup1);
@@ -33,11 +33,11 @@ void coreButtonsFunction() {
       if (twobuttons) {
         if (counter == 0) {
           counter = 1;
-          but1 = i+1;
+          but1 = i;
 
         } else {
           counter = 2;
-          but2 = i+1;
+          but2 = i;
           startTwoMillis = millis();
           twobuttons = false;
           twoButtonsChecked = true;
@@ -46,9 +46,10 @@ void coreButtonsFunction() {
         Serial.print("counter: ");
         Serial.println(counter);
         if (counter == 2) {
-
-          button1ID = but1;
-          button2ID = but2;
+          switchCoreButtons(but1);
+          switchCoreButtons(but2);
+          button1ID = but1+ 1; //+1 so counting starts at 1
+          button2ID = but2 +1; //,,
           Serial.print("Button1: ");
           Serial.println(button1ID);
           Serial.print("button 2: ");
@@ -67,16 +68,39 @@ void coreButtonsFunction() {
       } else {
         turnCompOff(i);
       }
-
+      
       sendInteraction(buttonID, state);
       coreButtons[i].dePressButton();
     }
   }
-  if (((millis() - startTwoMillis) > 1000) && (twoButtonsChecked)) {
+  if (((millis() - startTwoMillis) > 2000) && (twoButtonsChecked)) {
     fill_solid(leds_CORE, 37, CHSV(160, 200, 250));
     twoButtonsChecked = false;
   }
 }
+
+void switchCoreButtons(int i){
+      
+    switch (i) {
+      case 0:
+        coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader1, ader1Len, activeCoreGroup1);
+        break;
+      case 1:
+        coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader2, ader2Len, activeCoreGroup2);
+        break;
+      case 2:
+        coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader3, ader3Len, activeCoreGroup3);
+        break;
+      case 3:
+        coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader4, ader4Len, activeCoreGroup4);
+        break;
+      case 4:
+        coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader5, ader5Len, activeCoreGroup5);
+        break;
+    }
+
+}
+
 
 void turnCompOn(int core) {
   switch (core) {

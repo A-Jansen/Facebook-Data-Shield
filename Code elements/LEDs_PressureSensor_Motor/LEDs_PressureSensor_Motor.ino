@@ -7,12 +7,16 @@
 #define LED_PIN_OUTERRIM 10
 
 #define NUM_LEDS_CORE 87
-#define NUM_LEDS_COMPLEX 232   //leds in complex layer
+#define NUM_LEDS_COMPLEX 233   //leds in complex layer
 #define NUM_LEDS_OUTERRIM 283  //outer rim
 
 CRGB leds_CORE[NUM_LEDS_CORE];
 CRGB leds_COMPLEX[NUM_LEDS_COMPLEX];
 CRGB leds_OUTERRIM[NUM_LEDS_OUTERRIM];
+CHSV OUTERRIM_COLORS[NUM_LEDS_OUTERRIM];
+
+int OUTERRIM_SAT[NUM_LEDS_OUTERRIM];
+
 //---------------------------------------
 
 //define buttonpins, met de klok mee
@@ -79,7 +83,7 @@ CRGB leds_OUTERRIM[NUM_LEDS_OUTERRIM];
 /////// Aders connecting core and complex layer
 int ader1[] = { 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106 };
 int ader1Len = 26;
-int ader2[] = { 54,55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
+int ader2[] = { 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80 };
 int ader2Len = 27;
 int ader3[] = { 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53 };
 int ader3Len = 17;
@@ -111,7 +115,7 @@ char *coreNames[] = { "yourBehavior", "yourTechnologicalSetup", "YourDemographic
 
 
 DataButton complexButtonsCore1[] = {
-  DataButton(complexbutton1_1, 102, 106, 1), DataButton(complexbutton1_2, 107, 111, 1), DataButton(complexbutton1_3, 112, 116, 1), DataButton(complexbutton1_4, 117, 121, 1),
+  DataButton(complexbutton1_1, 232, 233, 1), DataButton(complexbutton1_2, 107, 111, 1), DataButton(complexbutton1_3, 112, 116, 1), DataButton(complexbutton1_4, 117, 121, 1),
   DataButton(complexbutton1_5, 122, 126, 1), DataButton(complexbutton1_6, 127, 131, 1), DataButton(complexbutton1_7, 132, 136, 1)
 };
 
@@ -154,6 +158,7 @@ bool upload = false;  // boolean to check if upload was pressed --> use to call 
 
 //float adjuster = 1;  //multiplier for speedLight and Brightness based on how much is on/off --> 0 if all off, 1 all on
 int active = 31;
+int oldActive = 31;
 
 //Variables for logging data
 int button1;
@@ -186,6 +191,7 @@ int button2ID;
 
 bool twobuttons = true;
 bool twoButtonsChecked = false;
+bool firstPressed = false;
 
 unsigned long startTwoMillis;
 
@@ -213,18 +219,15 @@ void setup() {
   FastLED.addLeds<WS2812B, LED_PIN_OUTERRIM, GRB>(leds_OUTERRIM, NUM_LEDS_OUTERRIM);
 
   turnAllOn();
+  outerrimLEDSsetup();
   FastLED.show();
 }
 
 void loop() {
   checkPresence();  //read the value of the pressure sensor to see if someone is standing on it
-                    //  Serial.print("Two buttons: ");
-                    //  Serial.println(twobuttons);
-  // if (twobuttons) {
-  //   checkTwoHighs();
-  // }
+
   brightnessOverall = int(map(active, 0, 31, 0, 255));
-  outerrimLEDS();
+  outerrimLEDS2();
   uploadButton.uploadButtonPress(leds_CORE, active, upload);
   seeMoreButton.turn(turning);
   // turnShield();
