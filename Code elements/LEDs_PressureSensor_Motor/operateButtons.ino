@@ -27,8 +27,8 @@ void coreButtonsFunction() {
     }
 
     if (coreButtons[i].pressedButton()) {
-      Serial.println("Pressed button core buttons");
-      Serial.println(twobuttons);
+      // Serial.println("Pressed button core buttons");
+      // Serial.println(twobuttons);
       //code at the start for checking if two buttons are pressed together for the id
       if (twobuttons) {
         if (counter == 0) {
@@ -44,7 +44,7 @@ void coreButtonsFunction() {
           twoButtonsChecked = true;
           fill_solid(leds_CORE, 37, CHSV(96, 200, 250));
         } else {
-          Serial.println(millis()-firstButtonMillis);
+          // Serial.println(millis()-firstButtonMillis);
           twobuttons = false; 
         }
         Serial.print("counter: ");
@@ -54,17 +54,17 @@ void coreButtonsFunction() {
           switchCoreButtons(but2);
           button1ID = but1+ 1; //+1 so counting starts at 1
           button2ID = but2 +1; //,,
-          Serial.print("Button1: ");
-          Serial.println(button1ID);
-          Serial.print("button 2: ");
-          Serial.println(button2ID);
+          // Serial.print("Button1: ");
+          // Serial.println(button1ID);
+          // Serial.print("button 2: ");
+          // Serial.println(button2ID);
         }
       }
 
 
 
       int state = coreButtons[i].checkState();
-      int buttonID = i;
+      int buttonID = i+1;
       //Serial.println(state);
       if (state == 1) {
         turnCompOn(i);
@@ -207,6 +207,8 @@ void complexButtons() {
     if (complexButtonsCore4[i].pressedButton()) {
       int state = complexButtonsCore4[i].checkState();
       int buttonID = 40 + i;
+      Serial.print("buttonID: ");
+      Serial.println(buttonID);
       sendInteraction(buttonID, state);
       complexButtonsCore4[i].dePressButton();
     }

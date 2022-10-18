@@ -39,36 +39,36 @@ void resetInstallation() {
   counter=0;
 }
 
-void checkTwoHighs() {
-  //if two highs, save them to button1 and button2 and use them as unique identifiers
-  // can only be in the core + upload button
-  int counter = 0;
-  int but1;
-  int but2;
- // Serial.println("check point check two highs");
-  for (int i = 0; i < numCoreButtons; i++) {
-    if (coreButtons[i].pressedButton()) {
-      Serial.println("Button pressed check two hihgs");
-      // counter++;
-      // if (counter == 0) {
-      //   but1 = i;
-      // } else {
-      //   but2 = i;
-      // }
-    }
-  }
-  // if (counter == 2) {
-  //   startTwoMillis = millis();
-  //   button1ID = but1;
-  //   button2ID = but2;
-  //   twobuttons = false;
-  //   Serial.println(button1ID);
-  //   Serial.println(button2ID);
+// void checkTwoHighs() {
+//   //if two highs, save them to button1 and button2 and use them as unique identifiers
+//   // can only be in the core + upload button
+//   int counter = 0;
+//   int but1;
+//   int but2;
+//  // Serial.println("check point check two highs");
+//   for (int i = 0; i < numCoreButtons; i++) {
+//     if (coreButtons[i].pressedButton()) {
+//       Serial.println("Button pressed check two hihgs");
+//       // counter++;
+//       // if (counter == 0) {
+//       //   but1 = i;
+//       // } else {
+//       //   but2 = i;
+//       // }
+//     }
+//   }
+//   // if (counter == 2) {
+//   //   startTwoMillis = millis();
+//   //   button1ID = but1;
+//   //   button2ID = but2;
+//   //   twobuttons = false;
+//   //   Serial.println(button1ID);
+//   //   Serial.println(button2ID);
 
-  //   if ((millis() - startTwoMillis) < 500) {
-  //     fill_solid(leds_CORE, 37, CHSV(96, 200, brightnessOverall));
-  //   } else {
-  //     fill_solid(leds_CORE, 37, CHSV(160, 200, brightnessOverall));
-  //   }
-  // }
-}
+//   //   if ((millis() - startTwoMillis) < 500) {
+//   //     fill_solid(leds_CORE, 37, CHSV(96, 200, brightnessOverall));
+//   //   } else {
+//   //     fill_solid(leds_CORE, 37, CHSV(160, 200, brightnessOverall));
+//   //   }
+//   // }
+// }

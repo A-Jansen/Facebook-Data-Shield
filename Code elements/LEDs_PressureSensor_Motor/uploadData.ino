@@ -1,4 +1,6 @@
 void sendInteraction(int buttonID, int activated) {
+  //Serial.print("ID: ");
+  //Serial.println(ID);
   //send first some indicator that it is just one interaction data
   //send: ID, which button pressed, if it is turned on or off
   //format: r ID(4) button(2) 0/1
@@ -6,15 +8,27 @@ void sendInteraction(int buttonID, int activated) {
   Serial1.print('r');
   if (ID < 100) Serial1.print('0');
   if (ID < 10) Serial1.print('0');
-  Serial1.print(ID);
+  Serial1.print(buttonID);
   if (buttonID < 10) Serial1.print('0');
-  Serial1.print(buttonID);     //int 01,02,03,04,05 for the core and 11,12,... 21, 21, ... for buttons in complex layer
+  Serial1.print(buttonID);           //int 01,02,03,04,05 for the core and 11,12,... 21, 21, ... for buttons in complex layer
   Serial1.println(activated);  //int 0 or 1
+  // Serial.print("Send interaction: ");
+  // Serial.print(ID);
+  // Serial.print(", ");
+  // Serial.println(activated);
+  Serial.print('r');
+  if (ID < 100) Serial.print('0');
+  if (ID < 10) Serial.print('0');
+  Serial.print(ID);
+  if (buttonID < 10) Serial.print('0');
+  Serial.print(buttonID);           //int 01,02,03,04,05 for the core and 11,12,... 21, 21, ... for buttons in complex layer
+  Serial.println(activated);  //int 0 or 1
 }
 
-void sendUpload() {
+void sendUpload(int ID) {
   //send: ID, button1, button2, final states of all buttons (31): all 0 or 1
   //format: u ID(4) button1(1)  button2(1)  0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,....
+  Serial.println("Send upload");
   Serial1.print('u');
   if (ID < 100) Serial1.print('0');
   if (ID < 10) Serial1.print('0');

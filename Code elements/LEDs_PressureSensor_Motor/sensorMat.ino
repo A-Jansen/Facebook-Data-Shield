@@ -42,7 +42,7 @@ void checkPresence() {
     if (millis() - lastLowMillis > intervalMillisHigh && longPause) {
       resetOnce=0;
       ID++;
-      Serial.print("ID: ");
+      Serial.print("ID init: ");
       Serial.println(ID);
       changeDetected = 0;
     }

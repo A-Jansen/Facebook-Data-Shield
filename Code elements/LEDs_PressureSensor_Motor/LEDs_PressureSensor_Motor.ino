@@ -203,7 +203,7 @@ int but2;
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial1.begin(115200);
   Serial.println("Starting");
   //pinMode is set when the object is created
@@ -238,8 +238,9 @@ void loop() {
 
 
   if (upload) {
+    sendUpload(ID);
     resetInstallation();
-    upload = false;
+     upload = false;
   }
   FastLED.show();
 }
