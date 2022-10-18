@@ -35,8 +35,19 @@ void resetInstallation() {
   activeCoreGroup5 = 1;
   active = 31;
 
+  button1ID;
+  button2ID;
+  but1;
+  but2;
+
+  twoButtonsChecked = false;
+  firstPressed = false;
+
+
   twobuttons = true;
-  counter=0;
+  counter = 0;
+
+  
 }
 
 // void checkTwoHighs() {

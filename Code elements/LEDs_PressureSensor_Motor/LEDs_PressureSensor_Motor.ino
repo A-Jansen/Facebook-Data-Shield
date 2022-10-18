@@ -145,6 +145,7 @@ DataButton complexButtonsCore5[] = {
 //--------------------------------------
 //Variables sketch LEDS
 int speedLight = 60;
+uint16_t speedLightTimer= 6;
 int fullSpeed = 6;
 int brightnessOverall = 255;
 
@@ -227,7 +228,7 @@ void setup() {
 void loop() {
   checkPresence();  //read the value of the pressure sensor to see if someone is standing on it
 
-  brightnessOverall = int(map(active, 0, 31, 0, 255));
+  brightnessOverall = int(map(active, 0, 31, 10, 255));
   outerrimLEDS2();
   uploadButton.uploadButtonPress(leds_CORE, active, upload);
   seeMoreButton.turn(turning);

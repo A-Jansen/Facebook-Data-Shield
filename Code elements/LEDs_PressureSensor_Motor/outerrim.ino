@@ -19,33 +19,34 @@ void outerrimLEDSsetup() {
   for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
     OUTERRIM_SAT[i] = random8();
     //Serial.println(OUTERRIM_SAT[i]);
-    OUTERRIM_COLORS[i] = CHSV(160, random8(), 255);
+    OUTERRIM_COLORS[i] = CHSV(160, random8(), brightnessOverall);
   }
   OUTERRIM_SAT[0] = 137;
 }
 
 void outerrimLEDS2() {
-  speedLight = int(map(active, 0, 31, 500, 6));
+  speedLight = int(map(active, 0, 31, 200, 6));
   // lager is sneller
-  // if (active != oldActive) {
-  //   oldActive = active;
-  //   for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
-  //     OUTERRIM_COLORS[i] = CHSV(160, OUTERRIM_SAT[i], brightnessOverall);
-  //     leds_OUTERRIM[i] = OUTERRIM_COLORS[i];
-  //   }
-  // }
+  if (active != oldActive) {
+    oldActive = active;
+    for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
+      OUTERRIM_COLORS[i] = CHSV(160, OUTERRIM_SAT[i], brightnessOverall);
+      leds_OUTERRIM[i] = OUTERRIM_COLORS[i];
+    }
+  }
   // Serial.print("Speed of light: ");
   // Serial.println(speedLight);
 
   //Serial.println(OUTERRIM_SAT[0]);
 
   for (int j = NUM_LEDS_OUTERRIM - 1; j > 0; j--) {
-    EVERY_N_MILLISECONDS(speedLight) {
+    EVERY_N_MILLIS_I(speedLightTimer, 6) {
       leds_OUTERRIM[0] = CHSV(160, OUTERRIM_SAT[j], brightnessOverall);
 
       for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
         leds_OUTERRIM[i] = leds_OUTERRIM[i - 1];
       }
+      speedLightTimer.setPeriod(speedLight);
     }
   }
   for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
@@ -55,6 +56,7 @@ void outerrimLEDS2() {
   }
   OUTERRIM_SAT[0] = 137;
 }
+
 
 // code below is static, with different saturations and changes in brightness. Does NOT moves
 // void outerrimLEDS2() {
