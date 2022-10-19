@@ -1,5 +1,6 @@
 //function for checking if someone is standing in front of the installation on the pressure mat
 void checkPresence() {
+  //Serial.println("Check presence");
   //only check if it is not turning --> give people the chance to take a step back
   if (!turning) {
     thisState = digitalRead(pin_pressureSensor);
@@ -26,9 +27,10 @@ void checkPresence() {
     if (thisState == HIGH) {
       if (millis() - lastHighMillis > intervalMillisLow) {
         longPause = 1;
-        // Serial.println("Longpause");
+        //Serial.println("Debug");
         if (!resetOnce) {
           resetInstallation();
+            Serial.println("Longpause");
         }
         lastLowMillis = millis();
 

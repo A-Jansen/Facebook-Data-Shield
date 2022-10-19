@@ -1,15 +1,10 @@
+// turn only once and turn back during reset!!!!
+
 void turnShield() {
   if (turning) {
-    digitalWrite(dirPin, HIGH);
-
-    // Spin the stepper motor 1 revolution quickly:
-    for (int i = 0; i < stepsPerRevolution; i++) {
-      // These four lines result in 1 step:
-      digitalWrite(stepPin, HIGH);
-      delayMicroseconds(1000);
-      digitalWrite(stepPin, LOW);
-      delayMicroseconds(1000);
-    }
+    fill_solid(leds_OUTERRIM, NUM_LEDS_OUTERRIM, CHSV(128, 200, brightnessOverall));
+    //myStepper.step(stepsPerRevolution);
+    delay(1000);
     turning = false;
   }
 }

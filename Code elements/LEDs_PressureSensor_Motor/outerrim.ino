@@ -46,6 +46,11 @@ void outerrimLEDS2() {
       for (int i = NUM_LEDS_OUTERRIM - 1; i > 0; i--) {
         leds_OUTERRIM[i] = leds_OUTERRIM[i - 1];
       }
+      Serial.print("timer speed");
+      Serial.print(active);
+      Serial.print(", ");
+      
+      Serial.println(speedLight);
       speedLightTimer.setPeriod(speedLight);
     }
   }

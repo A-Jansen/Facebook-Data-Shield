@@ -1,7 +1,7 @@
 void turnAllOn() {
   //rechte stukje naar core button1
   for (int i = 78; i <= 83; i++) {
-    leds_CORE[i] = CHSV(60, 200, 200);
+    leds_CORE[i] = CHSV(160, 200, 200);
   }
 
   for (int i = 0; i < NUM_LEDS_CORE; i++) {
@@ -23,10 +23,26 @@ void turnAllOn() {
 void resetInstallation() {
   resetOnce = 1;
   Serial.println("Reset");
+  //myStepper.step(-stepsPerRevolution);
   turnAllOn();
+  outerrimLEDS2();
   speedLight = 60;
-  fullSpeed = 6;
-  brightnessOverall = 255;
+  // fullSpeed = 6;
+  for (int i = 0; i < numCoreButtons; i++) {
+    coreButtons[i].reset();
+  }
+  for (int i = 0; i < numComplex2; i++) {
+    complexButtonsCore2[i].reset();
+  }
+  for (int i = 0; i < numComplex3; i++) {
+    complexButtonsCore3[i].reset();
+  }
+  for (int i = 0; i < numComplex4; i++) {
+    complexButtonsCore4[i].reset();
+  }
+  for (int i = 0; i < numComplex5; i++) {
+    complexButtonsCore5[i].reset();
+  }
 
   activeCoreGroup1 = 7;
   activeCoreGroup2 = 6;
@@ -35,10 +51,10 @@ void resetInstallation() {
   activeCoreGroup5 = 1;
   active = 31;
 
-  button1ID;
-  button2ID;
-  but1;
-  but2;
+  button1ID = 0;
+  button2ID = 0;
+  but1 = 0;
+  but2 = 0;
 
   twoButtonsChecked = false;
   firstPressed = false;
@@ -46,8 +62,6 @@ void resetInstallation() {
 
   twobuttons = true;
   counter = 0;
-
-  
 }
 
 // void checkTwoHighs() {

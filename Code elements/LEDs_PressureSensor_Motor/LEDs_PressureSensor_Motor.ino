@@ -1,5 +1,6 @@
 #include <DataButton.h>
 #include <FastLED.h>
+#include <Stepper.h>
 
 //LED strips -----------------------------
 #define LED_PIN_CORE 8
@@ -74,11 +75,11 @@ int OUTERRIM_SAT[NUM_LEDS_OUTERRIM];
 
 #define pin_pressureSensor 41  //voetmat
 
-#define pin_seeMoreButton 42  //check
+#define pin_seeMoreButton 67
 
 //for the motor
-#define dirPin 42   //not correct so check
-#define stepPin 43  // not correct so check!
+#define dirPin 69   //groen
+#define stepPin 68  // blauw
 
 /////// Aders connecting core and complex layer
 int ader1[] = { 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106 };
@@ -145,7 +146,7 @@ DataButton complexButtonsCore5[] = {
 //--------------------------------------
 //Variables sketch LEDS
 int speedLight = 60;
-uint16_t speedLightTimer= 6;
+uint16_t speedLightTimer = 6;
 int fullSpeed = 6;
 int brightnessOverall = 255;
 
@@ -184,8 +185,10 @@ int intervalMillisLow = 2000;  //at least 2 seconds low before possible to regis
 int intervalMillisHigh = 500;  //at least 500 ms high before adding new ID
 
 //variables motor
-#define stepsPerRevolution 2000
-bool turning = false;  // track if the shield is turning
+//#define stepsPerRevolution 2000
+//const int stepsPerRevolution = 200;
+//Stepper myStepper(stepsPerRevolution, stepPin, dirPin);  //blauw pin 7
+bool turning = false;                                    // track if the shield is turning
 
 int button1ID;
 int button2ID;
@@ -208,6 +211,7 @@ void setup() {
   Serial1.begin(115200);
   Serial.println("Starting");
   //pinMode is set when the object is created
+  //myStepper.setSpeed(200);
 
   pinMode(LED_PIN_CORE, OUTPUT);
   pinMode(LED_PIN_COMPLEX, OUTPUT);
@@ -226,13 +230,21 @@ void setup() {
 }
 
 void loop() {
+ // Serial.print("see more button: ");
+ // Serial.println(digitalRead(pin_seeMoreButton));
+   Serial.print("active: ");
+  Serial.println(active);
   checkPresence();  //read the value of the pressure sensor to see if someone is standing on it
-
+  //Serial.println(activeCoreGroup1);
   brightnessOverall = int(map(active, 0, 31, 10, 255));
-  outerrimLEDS2();
+  if (!turning) {
+    outerrimLEDS2();
+  } 
   uploadButton.uploadButtonPress(leds_CORE, active, upload);
   seeMoreButton.turn(turning);
-  // turnShield();
+  //Serial.print("See more: ");
+ // Serial.println(turning);
+  //turnShield();
   coreButtonsFunction();
   complexButtons();
   //checkTwoHighs();
@@ -241,7 +253,7 @@ void loop() {
   if (upload) {
     sendUpload(ID);
     resetInstallation();
-     upload = false;
+    upload = false;
   }
   FastLED.show();
 }
