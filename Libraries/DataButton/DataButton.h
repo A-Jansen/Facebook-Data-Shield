@@ -15,7 +15,7 @@ public:
   void setNumActiveGroup(int numActiveGroup);
   void changeGroupBrightness(CRGB ledstrip[], CRGB *ledstrip2, int &numActiveGroup, int ader[], int aderLen);
   void reset();
-  void turn(bool &turning);
+  void turn(bool &turning, bool&firstTurn);
   bool pressedButton();
   void dePressButton();
   void turnComplexOn(CRGB ledstrip[]);

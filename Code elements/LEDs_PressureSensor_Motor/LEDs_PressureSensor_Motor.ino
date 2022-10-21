@@ -78,8 +78,14 @@ int OUTERRIM_SAT[NUM_LEDS_OUTERRIM];
 #define pin_seeMoreButton 67
 
 //for the motor
-#define dirPin 69   //groen
-#define stepPin 68  // blauw
+#define dirPin 69        //groen
+#define stepPin 68       // blauw
+#define pin_endstop1 57  // van achter gezien rechts: voor meten open
+#define pin_endstop2 58  // van achter gezien links: voor meten dicht
+
+int endstop1;
+int endstop2;
+bool clockwise = false;
 
 /////// Aders connecting core and complex layer
 int ader1[] = { 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106 };
@@ -176,19 +182,23 @@ bool changeDetected = 0;
 bool longPause = 1;  //ensuring that there is at least intervalMillisLow between reading the first low and the first high --> otherwise on low reading could increase the ID number
 
 bool resetOnce = 0;
+bool skipSwitchOnce = false;
 
 int ID = 0;  //id of the current interaction, will be reset when disconnected
 
 unsigned long lastLowMillis;   // stores the millis() of when it first becomes high
 unsigned long lastHighMillis;  //stores the millis() of when it first becomes low
-int intervalMillisLow = 2000;  //at least 2 seconds low before possible to register second one
+int intervalMillisLow = 1000;  //at least 2 seconds low before possible to register second one
 int intervalMillisHigh = 500;  //at least 500 ms high before adding new ID
 
 //variables motor
 //#define stepsPerRevolution 2000
-//const int stepsPerRevolution = 200;
-//Stepper myStepper(stepsPerRevolution, stepPin, dirPin);  //blauw pin 7
+const int stepsPerRevolution = 200;
+int numSteps = 10300;
+Stepper myStepper(stepsPerRevolution, stepPin, dirPin);  //blauw pin 7
 bool turning = false;                                    // track if the shield is turning
+bool turningBack = false;
+
 
 int button1ID;
 int button2ID;
@@ -205,13 +215,14 @@ int counter = 0;
 int but1;
 int but2;
 
+bool firstTurn=false;
 
 void setup() {
   Serial.begin(115200);
   Serial1.begin(115200);
   Serial.println("Starting");
   //pinMode is set when the object is created
-  //myStepper.setSpeed(200);
+  myStepper.setSpeed(120);
 
   pinMode(LED_PIN_CORE, OUTPUT);
   pinMode(LED_PIN_COMPLEX, OUTPUT);
@@ -219,6 +230,9 @@ void setup() {
   pinMode(pin_pressureSensor, INPUT_PULLUP);
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
+
+  pinMode(pin_endstop1, INPUT_PULLUP);
+  pinMode(pin_endstop2, INPUT_PULLUP);
 
   FastLED.addLeds<WS2812B, LED_PIN_COMPLEX, GRB>(leds_COMPLEX, NUM_LEDS_COMPLEX);
   FastLED.addLeds<WS2812B, LED_PIN_CORE, GRB>(leds_CORE, NUM_LEDS_CORE);
@@ -230,27 +244,37 @@ void setup() {
 }
 
 void loop() {
- // Serial.print("see more button: ");
- // Serial.println(digitalRead(pin_seeMoreButton));
-   Serial.print("active: ");
-  Serial.println(active);
+  // Serial.print("see more button: ");
+  // Serial.println(digitalRead(pin_seeMoreButton));
+  endstop1 = digitalRead(pin_endstop1);
+  //Serial.print("endstop 1 ");
+  //Serial.println(endstop1);
+
   checkPresence();  //read the value of the pressure sensor to see if someone is standing on it
   //Serial.println(activeCoreGroup1);
   brightnessOverall = int(map(active, 0, 31, 10, 255));
   if (!turning) {
     outerrimLEDS2();
-  } 
+  }
   uploadButton.uploadButtonPress(leds_CORE, active, upload);
-  seeMoreButton.turn(turning);
+  seeMoreButton.turn(turning, firstTurn);
   //Serial.print("See more: ");
- // Serial.println(turning);
-  //turnShield();
+  // Serial.println(turning);
+  if (turning) {
+    if(firstTurn){
+      sendInteraction(ID, 99 , 1); //see more is 99 for button ID
+      firstTurn = false;
+    }
+
+    turnShield();
+  }
   coreButtonsFunction();
   complexButtons();
   //checkTwoHighs();
 
 
   if (upload) {
+   // fill_solid(leds_OUTERRIM, NUM_LEDS_OUTERRIM, CHSV(128, 200, brightnessOverall));
     sendUpload(ID);
     resetInstallation();
     upload = false;

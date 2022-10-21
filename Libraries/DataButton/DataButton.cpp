@@ -143,7 +143,7 @@ void DataButton::turnComplexOn(CRGB ledstrip[]) {
 
 void DataButton::turnCoreOn(CRGB ledstrip[], CRGB *ledstrip2, int &numActive, int ader[], int aderLen, int &numActiveGroup) {
   _value = 1;
-  _pressed = true;
+  // _pressed = true;
   numActive = numActive + _associatedVars + 1;  //add the number of variables in complex layer to number of active variables
   for (int i = _startLED; i <= _endLED; i++) {
     // brightnessOverall=int(map(active, 0, 31, 0, 255));
@@ -210,6 +210,9 @@ void DataButton::uploadButtonPress(CRGB *ledstrip, int &numActive, bool &upload)
       if (_buttonState == LOW) {
         upload = true;
         fill_solid(ledstrip, 37, CHSV(96, 200, 250));
+        for (int i = 78; i <= 83; i++) {
+          ledstrip[i] = CHSV(96, 200, 200);
+        }
         //set shortly off and slowly turn it on
         for (int j = 0; j < 5; j++) {
           for (int i = _startLED; i <= _endLED; i++) {
@@ -226,13 +229,16 @@ void DataButton::uploadButtonPress(CRGB *ledstrip, int &numActive, bool &upload)
           }
         }
         fill_solid(ledstrip, 37, CHSV(160, 200, 250));
+        for (int i = 78; i <= 83; i++) {
+          ledstrip[i] = CHSV(160, 200, 200);
+        }
       }
     }
   }
   _lastButtonState = _reading;
 }
 
-void DataButton::turn(bool &turning) {
+void DataButton::turn(bool &turning, bool &firstTurn) {
   _reading = digitalRead(_pin);
   //check if state changed, e.g. if it is pressed
   if (_reading != _lastButtonState) {
@@ -245,6 +251,7 @@ void DataButton::turn(bool &turning) {
       if (_buttonState == LOW) {
         //button is pressed for sure
         turning = true;
+        firstTurn = true;
       }
     }
   }

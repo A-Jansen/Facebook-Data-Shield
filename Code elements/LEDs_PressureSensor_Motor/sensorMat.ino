@@ -1,11 +1,11 @@
 //function for checking if someone is standing in front of the installation on the pressure mat
 void checkPresence() {
-  //Serial.println("Check presence");
+ // Serial.println(digitalRead(pin_pressureSensor));
   //only check if it is not turning --> give people the chance to take a step back
   if (!turning) {
     thisState = digitalRead(pin_pressureSensor);
-    // Serial.print("This state: ");
-    // Serial.println(thisState);
+  //   Serial.print("This state: ");
+  //   Serial.println(thisState);
 
     //if someone steps on the mat, set time of last low(high) reading --> used to check if at least XXX ms high as to not trigger it with just 1 high reading
     if (thisState == LOW && lastState != thisState) {
@@ -30,7 +30,7 @@ void checkPresence() {
         //Serial.println("Debug");
         if (!resetOnce) {
           resetInstallation();
-            Serial.println("Longpause");
+          //  Serial.println("Longpause");
         }
         lastLowMillis = millis();
 

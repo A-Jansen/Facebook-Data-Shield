@@ -21,8 +21,18 @@ void turnAllOn() {
 }
 
 void resetInstallation() {
+
   resetOnce = 1;
+  turningBack = true;
   Serial.println("Reset");
+  if (clockwise) {
+    Serial.println("In if loop clockwise");
+
+    while (turningBack) {
+      //   Serial.println("In while loop");
+      turnClockwise();
+    }
+  }
   //myStepper.step(-stepsPerRevolution);
   turnAllOn();
   outerrimLEDS2();
@@ -58,7 +68,7 @@ void resetInstallation() {
 
   twoButtonsChecked = false;
   firstPressed = false;
-
+firstTurn=false;
 
   twobuttons = true;
   counter = 0;

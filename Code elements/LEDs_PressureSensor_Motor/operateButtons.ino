@@ -8,26 +8,30 @@ void coreButtonsFunction() {
   for (int i = 0; i < numCoreButtons; i++) {
     //Serial.println(coreButtons[i].pressedButton());
     //    switchCoreButtons(i);
-    switch (i) {
-      case 0:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader1, ader1Len, activeCoreGroup1, numComplex1);
-        // if(coreButtons[i].checkState()==0){
-        //   turnComplexOff();
-        // } else
-        break;
-      case 1:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader2, ader2Len, activeCoreGroup2, numComplex2);
-        break;
-      case 2:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader3, ader3Len, activeCoreGroup3, numComplex3);
-        break;
-      case 3:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader4, ader4Len, activeCoreGroup4, numComplex4);
-        break;
-      case 4:
-        coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader5, ader5Len, activeCoreGroup5, numComplex5);
-        break;
-    }
+      switch (i) {
+
+        case 0:
+       //   Serial.println("switch core buttons");
+          coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader1, ader1Len, activeCoreGroup1, numComplex1);
+          // if(coreButtons[i].checkState()==0){
+          //   turnComplexOff();
+          // } else
+          break;
+        case 1:
+         // Serial.println("switch core buttons");
+          coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader2, ader2Len, activeCoreGroup2, numComplex2);
+          break;
+        case 2:
+          coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader3, ader3Len, activeCoreGroup3, numComplex3);
+          break;
+        case 3:
+          coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader4, ader4Len, activeCoreGroup4, numComplex4);
+          break;
+        case 4:
+          coreButtons[i].coreButtonPress(leds_CORE, leds_COMPLEX, active, ader5, ader5Len, activeCoreGroup5, numComplex5);
+          break;
+      }
+    
 
     if (coreButtons[i].pressedButton()) {
 
@@ -43,11 +47,15 @@ void coreButtonsFunction() {
 
         } else if ((millis() - firstButtonMillis) < 2000) {
           counter = 2;
+          skipSwitchOnce =true;
           but2 = i;
           startTwoMillis = millis();
           twobuttons = false;
           twoButtonsChecked = true;
           fill_solid(leds_CORE, 37, CHSV(96, 200, 250));
+          for (int i = 78; i <= 83; i++) {
+            leds_CORE[i] = CHSV(96, 200, 250);
+          }
         } else {
           // Serial.println(millis()-firstButtonMillis);
           twobuttons = false;
@@ -57,17 +65,15 @@ void coreButtonsFunction() {
         if (counter == 2) {
           switchCoreButtons(but1);
           switchCoreButtons(but2);
-
           button1ID = but1 + 1;  //+1 so counting starts at 1
           button2ID = but2 + 1;  //,,
+        
           // Serial.print("Button1: ");
           // Serial.println(button1ID);
           // Serial.print("button 2: ");
           // Serial.println(button2ID);
         }
       }
-
-
 
       int state = coreButtons[i].checkState();
       int buttonID = i + 1;
@@ -88,16 +94,26 @@ void coreButtonsFunction() {
     for (int i = 78; i <= 83; i++) {
       leds_CORE[i] = CHSV(160, 200, 250);
     }
+      turnCoreOnAgain(but1, but2);
     twoButtonsChecked = false;
+      skipSwitchOnce =false;
   }
 }
 
+void turnCoreOnAgain(int b1, int b2){
+  coreButtons[b1].turnComplexOn(leds_CORE);
+  coreButtons[b2].turnComplexOn(leds_CORE);
+
+}
+
 void switchCoreButtons(int i) {
-  Serial.println("Switch core buttons");
+  Serial.print("Switch core buttons: ");
+  Serial.println(i);
   //  coreButtons[i].reset();
+ // turnCompOn(i);
   switch (i) {
     case 0:
-     coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader1, ader1Len, activeCoreGroup1);
+      coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader1, ader1Len, activeCoreGroup1);
       break;
     case 1:
       coreButtons[i].turnCoreOn(leds_CORE, leds_COMPLEX, active, ader2, ader2Len, activeCoreGroup2);
